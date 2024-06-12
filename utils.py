@@ -12,7 +12,7 @@ def load_openai_key() -> str:
     """
     Loads the openai API key
     """
-    return load_secret_file("../secrets/api")
+    return load_secret_file("secrets/api")
 
 
 def setup_openai():
@@ -27,14 +27,14 @@ def load_google_cse() -> str:
     """
     Loads the google search engine ID
     """
-    return load_secret_file("../secrets/google_cse")
+    return load_secret_file("secrets/google_cse")
 
 
 def load_google_api_key() -> str:
     """
     Loads the google search engine ID
     """
-    return load_secret_file("../secrets/google_api_key")
+    return load_secret_file("secrets/google_api_key")
 
 
 def setup_google_search():

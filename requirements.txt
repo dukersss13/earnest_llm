@@ -1,4 +1,10 @@
 numpy
+pandas
+html2text
+chromadb
 langchain_openai
 langchain_core
 langchain_google_community
+beautifulsoup4
+playwright
+pypdf

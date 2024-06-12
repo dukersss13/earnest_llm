@@ -1,33 +1,41 @@
+import re
+
 from langchain_community.document_loaders.pdf import PyPDFLoader
 from langchain_community.vectorstores import Chroma
-from langchain_core.output_parsers import StrOutputParser
-from langchain_core.runnables import RunnablePassthrough
 from langchain_openai import OpenAIEmbeddings
 
-from earnest import prompt, llm
 
+class KnowledgeBase:
+    def __init__(self, url: str):
+        # Load, split, embed & store
+        pages = self._load_and_split(url)
+        self.vectorstore = Chroma.from_documents(documents=pages, 
+                                                 embedding=OpenAIEmbeddings())
 
-# Load Documents
-url = "https://s27.q4cdn.com/749715820/files/doc_financials/2023/q4/a31f2915-31bf-45ae-99cf-18f3c0138869.pdf"
-loader = PyPDFLoader(url)
-pages = loader.load_and_split()
+    @staticmethod
+    def _load_and_split(url: str):
+        file_extension = KnowledgeBase._identify_file_extension(url)
 
-# Embedding
-vectorstore = Chroma.from_documents(documents=pages, 
-                                    embedding=OpenAIEmbeddings())
+        if file_extension == "pdf":
+            loader = PyPDFLoader(url)
+        elif file_extension == "html":
+            pass
 
-# Retriever
-retriever = vectorstore.as_retriever()
+        pages = loader.load_and_split()
 
+        return pages
 
-# Post-processing
-def format_docs(documents):
-    return "\n\n".join(doc.page_content for doc in documents)
-
-# Chain
-rag_chain = (
-    {"context": retriever | format_docs, "user_input": RunnablePassthrough()}
-    | prompt
-    | llm
-    | StrOutputParser()
-)
+    @staticmethod
+    def _identify_file_extension(url: str):
+        # Regex pattern to match common document file extensions
+        pattern = re.compile(r'\.(pdf|html?|docx?|xlsx?|pptx?|txt|rtf|odt|csv|json|xml|md)$', re.IGNORECASE)
+        
+        # Search for the pattern in the URL
+        match = pattern.search(url)
+        
+        if match:
+            # Return the file extension (without the dot)
+            return match.group(1)
+        else:
+            # Return None if no valid extension is found
+            return None

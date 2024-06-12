@@ -1,11 +1,19 @@
 from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
+
+from knowledge_base import KnowledgeBase
+from utils import setup_openai
+
+setup_openai()
 
 llm = ChatOpenAI(model_name="gpt-4-turbo-preview", temperature=0.1)
 
 prompt_template = \
 """
-Your job is to help answer any questions related to the document retrieved. This document is the earnings report of a company.
+Your job is to give a summary or help answer any questions related to the document retrieved.
+This document is the earnings report of a company.
 
 If the user asks for a summary, give them the Total Net Revenue: <dollars> (Year over Year Percentage Change) [Page page_number],
 Gross Profit: <dollars> (Year over Year % Change) [Page page_number],
@@ -32,3 +40,24 @@ Here's an example:
 """
 
 prompt = PromptTemplate(template=prompt_template, input_variables=["user_input"])
+
+class Earnest:
+    def __init__(self, knowledge_base: KnowledgeBase):
+        self._init_rag_chain(knowledge_base)
+
+    def _init_rag_chain(self, knowledge_base: KnowledgeBase):
+        # Post-processing
+        def format_docs(documents):
+            return "\n\n".join(doc.page_content for doc in documents)
+
+        retriever = knowledge_base.vectorstore.as_retriever()
+        # Chain
+        self.rag_chain = (
+            {"context": retriever | format_docs, "user_input": RunnablePassthrough()}
+            | prompt
+            | llm
+            | StrOutputParser()
+        )
+    
+    def ask(self, question: str):
+        return self.rag_chain.invoke(question)
