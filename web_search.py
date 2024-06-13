@@ -1,5 +1,9 @@
-from langchain_google_community import GoogleSearchAPIWrapper
 from utils import setup_google_search, setup_openai
+
+from langchain_google_community import GoogleSearchAPIWrapper
+from langchain_community.document_loaders import AsyncHtmlLoader
+from langchain_community.document_transformers import BeautifulSoupTransformer
+from langchain_core.documents import Document
 
 
 setup_google_search()
@@ -7,26 +11,37 @@ setup_openai()
 
 search = GoogleSearchAPIWrapper()
 
-search_request = "Tesla Q4 2023 earnings report 10-k"
-r = search.results(search_request, num_results=6)
 
-from langchain_community.document_loaders import AsyncHtmlLoader
-from langchain_community.document_transformers import BeautifulSoupTransformer
+def conduct_websearch(query: str) -> list[str]:
+    """_summary_
 
-urls = [link["link"] for link in r]
+    :param query: _description_
+    :return: _description_
+    """
+    r = search.results(query, num_results=6)
+    urls = [link["link"] for link in r]
 
-# Load HTML
-loader = AsyncHtmlLoader(urls)
-docs = loader.load()
-
-bs_transformer = BeautifulSoupTransformer()
-docs_transformed = bs_transformer.transform_documents(docs)
-docs_transformed[0].page_content[0:500]
+    return urls
 
 
-from langchain_community.vectorstores import Chroma
-from langchain_openai import OpenAIEmbeddings
+def transform_search_results(urls: list[str]):
+    # Load HTML
+    loader = AsyncHtmlLoader(urls)
+    docs = loader.load()
 
-db = Chroma.from_documents(documents=docs_transformed, embedding=OpenAIEmbeddings())
+    bs_transformer = BeautifulSoupTransformer()
+    docs_transformed = bs_transformer.transform_documents(docs)
+    
+    return docs_transformed
 
-# Connect this to knowledge base
+
+def fetch_knowledge(query: str) -> list[Document]:
+    """_summary_
+
+    :param query: _description_
+    :return: _description_
+    """
+    urls = conduct_websearch(query)
+    docs = transform_search_results(urls)
+
+    return docs

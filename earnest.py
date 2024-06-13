@@ -6,13 +6,14 @@ from langchain_core.runnables import RunnablePassthrough
 from knowledge_base import KnowledgeBase
 from utils import setup_openai
 
+
 setup_openai()
 
 llm = ChatOpenAI(model_name="gpt-4-turbo-preview", temperature=0.1)
 
 prompt_template = \
 """
-Your job is to give a summary or help answer any questions related to the document retrieved.
+Your job is to give a summary of the document or help answer any questions related to the document retrieved.
 This document is the earnings report of a company.
 
 If the user asks for a summary, give them the Total Net Revenue: <dollars> (Year over Year Percentage Change) [Page page_number],
@@ -61,3 +62,5 @@ class Earnest:
     
     def ask(self, question: str):
         return self.rag_chain.invoke(question)
+    
+

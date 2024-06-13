@@ -1,16 +1,34 @@
 import re
 
+from chromadb import Documents
 from langchain_community.document_loaders.pdf import PyPDFLoader
 from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings
+from langchain_core.documents import Document
+
+from utils import setup_openai
+from web_search import fetch_knowledge, transform_search_results
+from enum import Enum
+
+setup_openai()
+
+
+class RequestType(Enum):
+    SEARCH = 0
+    SCRAPE = 1
 
 
 class KnowledgeBase:
-    def __init__(self, url: str):
-        # Load, split, embed & store
-        pages = self._load_and_split(url)
-        self.vectorstore = Chroma.from_documents(documents=pages, 
-                                                 embedding=OpenAIEmbeddings())
+    def __init__(self, search_query: tuple[RequestType, str]):
+        if search_query[0] == RequestType.SCRAPE:
+            url = search_query[1]
+            # Load, split, embed & store
+            docs = self._load_and_split(url)
+        elif search_query[0] == RequestType.SEARCH:
+            query = search_query[1]
+            docs = fetch_knowledge(query)
+
+        self.enrich_knowledge_base(docs)
 
     @staticmethod
     def _load_and_split(url: str):
@@ -18,12 +36,11 @@ class KnowledgeBase:
 
         if file_extension == "pdf":
             loader = PyPDFLoader(url)
+            documents = loader.load_and_split()
         elif file_extension == "html":
-            pass
+            documents = transform_search_results(url)
 
-        pages = loader.load_and_split()
-
-        return pages
+        return documents
 
     @staticmethod
     def _identify_file_extension(url: str):
@@ -39,3 +56,11 @@ class KnowledgeBase:
         else:
             # Return None if no valid extension is found
             return None
+
+    def enrich_knowledge_base(self, docs: Document):
+        """_summary_
+
+        :param documents: _description_
+        """
+        self.vectorstore = Chroma.from_documents(documents=docs, 
+                                        embedding=OpenAIEmbeddings())
