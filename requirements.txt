@@ -8,3 +8,4 @@ langchain_google_community
 beautifulsoup4
 playwright
 pypdf
+yfinance

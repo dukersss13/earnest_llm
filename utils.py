@@ -30,7 +30,7 @@ def load_google_cse() -> str:
     return load_secret_file("secrets/google_cse")
 
 
-def load_google_api_key() -> str:
+def load_google_api_key():
     """
     Loads the google search engine ID
     """
@@ -45,3 +45,13 @@ def setup_google_search():
     api_key = load_google_api_key()
     os.environ["GOOGLE_CSE_ID"] = cse_key
     os.environ["GOOGLE_API_KEY"] = api_key
+
+
+def load_tavily_api_key(): 
+    # Load Tavily Search API key
+    return load_secret_file("secrets/tavily_api_key")
+
+
+def setup_tavily_search():
+    api_key = load_tavily_api_key()
+    os.environ["TAVILY_API_KEY"] = api_key

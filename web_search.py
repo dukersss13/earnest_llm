@@ -1,45 +1,61 @@
-from utils import setup_google_search, setup_openai
+from enum import Enum
+from utils import setup_google_search, setup_openai, setup_tavily_search
+
+from langchain_community.tools.tavily_search import TavilySearchResults
 
 from langchain_google_community import GoogleSearchAPIWrapper
-from langchain_community.document_loaders import AsyncHtmlLoader
-from langchain_community.document_transformers import BeautifulSoupTransformer
+from langchain_community.document_loaders import WebBaseLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
 
 
-setup_google_search()
 setup_openai()
 
-search = GoogleSearchAPIWrapper()
+class Search(Enum):
+    GOOGLE = 1
+    TAVILY = 2
+
+
+SEARCH_ENGINE = Search.TAVILY
+
+
+if SEARCH_ENGINE == Search.GOOGLE:
+    setup_google_search()
+    search = GoogleSearchAPIWrapper()
+elif SEARCH_ENGINE == Search.TAVILY:
+    setup_tavily_search()
+    search = TavilySearchResults(max_results=4)
 
 
 def conduct_websearch(query: str) -> list[str]:
-    """_summary_
-
-    :param query: _description_
-    :return: _description_
     """
-    r = search.results(query, num_results=6)
-    urls = [link["link"] for link in r]
+    Conduct a web search using GoogleSearchAPI
+    """
+    if SEARCH_ENGINE == Search.GOOGLE:
+        r = search.results(query, num_results=4)
+        urls = [link["link"] for link in r]
+    elif SEARCH_ENGINE == Search.TAVILY:
+        r = search.invoke(query)
+        urls = [link["url"] for link in r]
 
     return urls
 
 
 def transform_search_results(urls: list[str]):
-    # Load HTML
-    loader = AsyncHtmlLoader(urls)
+    """
+    Load and transform found documents
+    """
+    loader = WebBaseLoader(urls)
     docs = loader.load()
-
-    bs_transformer = BeautifulSoupTransformer()
-    docs_transformed = bs_transformer.transform_documents(docs)
+    docs = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200).split_documents(docs)
     
-    return docs_transformed
+    return docs
 
 
 def fetch_knowledge(query: str) -> list[Document]:
-    """_summary_
-
-    :param query: _description_
-    :return: _description_
+    """
+    Conduct a web search and store information
+    in vector database
     """
     urls = conduct_websearch(query)
     docs = transform_search_results(urls)

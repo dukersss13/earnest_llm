@@ -1,6 +1,5 @@
 import re
 
-from chromadb import Documents
 from langchain_community.document_loaders.pdf import PyPDFLoader
 from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings
@@ -10,17 +9,18 @@ from utils import setup_openai
 from web_search import fetch_knowledge, transform_search_results
 from enum import Enum
 
-setup_openai()
 
+setup_openai()
 
 class RequestType(Enum):
     SEARCH = 0
-    SCRAPE = 1
+    LOAD = 1
 
 
 class KnowledgeBase:
-    def __init__(self, search_query: tuple[RequestType, str]):
-        if search_query[0] == RequestType.SCRAPE:
+    def db_query(self, search_query: str):
+        # Query the DB for answers
+        if search_query[0] == RequestType.LOAD:
             url = search_query[1]
             # Load, split, embed & store
             docs = self._load_and_split(url)
@@ -31,7 +31,7 @@ class KnowledgeBase:
         self.enrich_knowledge_base(docs)
 
     @staticmethod
-    def _load_and_split(url: str):
+    def _load_and_split(url: str) -> list[Document]:
         file_extension = KnowledgeBase._identify_file_extension(url)
 
         if file_extension == "pdf":
@@ -63,4 +63,4 @@ class KnowledgeBase:
         :param documents: _description_
         """
         self.vectorstore = Chroma.from_documents(documents=docs, 
-                                        embedding=OpenAIEmbeddings())
+                                                 embedding=OpenAIEmbeddings())
