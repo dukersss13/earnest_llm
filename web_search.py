@@ -41,7 +41,7 @@ def conduct_websearch(query: str) -> list[str]:
     return urls
 
 
-def transform_search_results(urls: list[str]):
+def load_and_split_urls(urls: list[str]):
     """
     Load and transform found documents
     """
@@ -58,6 +58,6 @@ def fetch_knowledge(query: str) -> list[Document]:
     in vector database
     """
     urls = conduct_websearch(query)
-    docs = transform_search_results(urls)
+    docs = load_and_split_urls(urls)
 
     return docs
