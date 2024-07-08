@@ -1,6 +1,7 @@
 numpy
 pandas
 html2text
+langchainhub
 chromadb
 langchain_openai
 langchain_core

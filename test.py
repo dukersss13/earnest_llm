@@ -1,13 +1,11 @@
 from utils import setup_openai
 from earnest import llm
-from knowledge_base import KnowledgeBase
+from tools import scrape_info, web_search
 
 
 setup_openai()
 
-kb = KnowledgeBase()
-
-tools = [kb.scrape_info, kb.web_search]
+tools = [scrape_info, web_search]
 
 model_with_tools = llm.bind_tools(tools)
 

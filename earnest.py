@@ -1,105 +1,95 @@
-import re
-from langchain_openai import ChatOpenAI
-from langchain.chains import create_retrieval_chain
-from langchain.chains.combine_documents import create_stuff_documents_chain
-from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
-from langchain_core.output_parsers import StrOutputParser
-from langchain_core.runnables import RunnablePassthrough
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_community.vectorstores import Chroma
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.documents import Document
+from langchain.chains import create_history_aware_retriever, create_retrieval_chain
+from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain_core.messages import AIMessage, HumanMessage
 
-from knowledge_base import KnowledgeBase, RequestType
+from tools import scrape_info, answer
+from prompts import contextualize_q_prompt, qa_prompt
 from utils import setup_openai
+
 
 setup_openai()
 
-llm = ChatOpenAI(model_name="gpt-4-turbo", temperature=0.2)
 
-system_prompt = \
-"""
-Start by asking the user if they have a specific company and quarterly earnings
-report they want to research. Tell the user you can also accept PDF urls of the earnings report.
+llm = ChatOpenAI(model_name="gpt-4-turbo", temperature=0.1)
 
-Your job is to give a summary of the document or help answer any questions related to the document retrieved.
-This document is the earnings report of a company.
 
-If the user asks for a summary, summarize it in a paragraph and include all the key metrics.
-
-The context used to answer questions should only be related to the document retrieved.
-If you cannot answer the question, ask the user to rephrase the question or be more specific.
-Do not make things up. Be concise.
-
-If you have an answer, put the page number containing this information in parentheses.
-
-------------------------------
-<context>
-
-Here's an example:
-What is the total net revenue?
-The total net revenue was $100M (Page <page_number>)
-
-------------------------------
-
-{user_input}
-{context}
-"""
-
-prompt = ChatPromptTemplate.from_messages(
-    [
-        ("system", system_prompt),
-        ("human", "{user_input}"),
-    ]
-)
-
-# question_answer_chain = create_stuff_documents_chain(llm, prompt)
-# rag_chain = create_retrieval_chain(retriever, question_answer_chain)
-
+tools = [scrape_info, answer]
 
 class Earnest:
     def __init__(self):
+        self.vectorstore = Chroma(embedding_function=OpenAIEmbeddings())
         self._init_rag_chain()
+        self.chat_history = []
 
     def _init_rag_chain(self):
         # Init rag chain
-        self.knowledge_base = KnowledgeBase()
-
-        # Post-processing
-        def format_docs(documents: list[Document]):
-            return "\n\n".join(doc.page_content for doc in documents)
-
-        retriever = self.knowledge_base.vectorstore.as_retriever()
+        retriever = self.vectorstore.as_retriever()
+        self.llm_with_tools = llm.bind_tools(tools) 
         # Chain
-        self.rag_chain = (
-            {"context": retriever | format_docs, "user_input": RunnablePassthrough()}
-            | prompt
-            | llm.bind_tools([self.knowledge_base.scrape_info,
-                              self.knowledge_base.web_search])
-            | StrOutputParser()
+        history_aware_retriever = create_history_aware_retriever(self.llm_with_tools, retriever, contextualize_q_prompt)
+        question_answer_chain = create_stuff_documents_chain(llm, qa_prompt)
+        self.rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)
+
+    def _assess_query(self, query: str):
+        # Assess query
+        msg = self.llm_with_tools.invoke(query)
+
+        return msg
+    
+    def _process_user_input(self, human_message: str):
+        msg = self._assess_query(human_message)
+        if msg.tool_calls:
+            query = msg.tool_calls[0]["args"]["query"]
+            if msg.tool_calls[0]["name"] == "scrape_info":
+                docs = scrape_info.run(query)
+                self.enrich_knowledge_base(docs)
+        # elif msg.tool_calls["name"] == "web_search":
+        #     docs = web_search.run(query)
+        #     self.enrich_knowledge_base(docs)
+
+        llm_output = self.rag_chain.invoke({"input": human_message, "chat_history": self.chat_history})
+        llm_message = llm_output["answer"]
+        self._update_chat_history(human_message, llm_message)
+
+        return llm_message
+
+    def _update_chat_history(self, human_message: str,
+                             llm_message: str):
+        """
+        Update the chat history
+        """
+        self.chat_history.extend(
+            [
+                HumanMessage(content=human_message),
+                AIMessage(content=llm_message)
+            ]
         )
-
-    def _assess_query(self, query: str) -> tuple[RequestType, str]:
-        # Assess the query from the user
-        urls = Earnest._find_urls(query)
-        if urls:
-            query = (RequestType.SCRAPE, urls)
-        else:
-            query = (RequestType.SEARCH, query)
-
-        return query
 
     def _check_knowledge_base(self, query: str):
         # Check knowledge base if info exists
-        return self.knowledge_base.vectorstore.similarity_search_with_relevance_scores(query)
+        return self.vectorstore.similarity_search_with_relevance_scores(query)
+
+    def enrich_knowledge_base(self, docs: Document):
+        # Enrich the knowledge base with retrieved documents
+        self.vectorstore.add_documents(documents=docs)
+
+    def ask(self, user_input: str):
+        # user_input = {"input": user_input, "chat_history": self.chat_history}
+        msg = self._process_user_input(user_input)
+        
+        return msg
     
-    def ask(self, query: str):
-        # First check Knowledge Base if info exists
-        # if not self._check_knowledge_base(query):
-        #     query_tuple = self._assess_query(query)
-        #     self.knowledge_base.enrich_knowledge_base(query_tuple)
-
-        return self.rag_chain.invoke(query)
-
     def start(self):
-        # Kickstart Earnest
-        starting_input = "Hi"
-        return self.rag_chain.invoke(starting_input)
+        terminate = False
+        if not self.chat_history:
+            print()
+            print(self.ask("Hi"))
 
+        while not terminate:
+            user_input = str(input("User: "))
+            print(self.ask(user_input))
+            print()
