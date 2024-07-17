@@ -78,7 +78,6 @@ class Earnest:
         self.vectorstore.add_documents(documents=docs)
 
     def ask(self, user_input: str):
-        # user_input = {"input": user_input, "chat_history": self.chat_history}
         msg = self._process_user_input(user_input)
         
         return msg
