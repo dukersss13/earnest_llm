@@ -83,13 +83,5 @@ class Earnest:
         
         return msg
     
-    def start(self):
-        terminate = False
-        if not self.chat_history:
-            print()
-            print(self.ask("Hi"))
-
-        while not terminate:
-            user_input = str(input("User: "))
-            print(self.ask(user_input))
-            print()
+    def start(self, message: str):
+        return self.ask(message)
