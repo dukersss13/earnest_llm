@@ -5,9 +5,9 @@ from langchain.chains import create_history_aware_retriever, create_retrieval_ch
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.messages import AIMessage, HumanMessage
 
-from tools import scrape_info, answer
-from prompts import contextualize_q_prompt, qa_prompt
-from utils import setup_openai
+from helper.tools import scrape_info, answer
+from llm.prompts import contextualize_q_prompt, qa_prompt
+from helper.utils import setup_openai
 
 
 setup_openai()

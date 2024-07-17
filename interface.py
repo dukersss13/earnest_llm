@@ -1,4 +1,4 @@
-from earnest import Earnest
+from llm.earnest import Earnest
 import gradio as gr
 
 
