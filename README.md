@@ -22,10 +22,10 @@ Then, we are good to go and proceed with any questions you have. Earnest will ha
 To get started, you will need to install:
 
 1. IDE of choice ([VSCode](https://code.visualstudio.com/download) recommended)
-2. Generate [OpenAI API Key](https://openai.com/index/openai-api/) & store under **secrets/openai_api_key**
-3. Generate [Tavily API Key](https://app.tavily.com/home) & store under **secrets/tavily_api_key**
-4. Generate [Google Search API Key](https://python.langchain.com/v0.2/docs/integrations/tools/google_search/) (Optional) & store under **secrets/google_cse and secrets/google_api_key**
-5. [Docker](https://www.docker.com/products/docker-desktop/) 
+2. [Docker](https://www.docker.com/products/docker-desktop/) 
+3. Generate [OpenAI API Key](https://openai.com/index/openai-api/) & store under **secrets/openai_api_key**
+4. Generate [Tavily API Key](https://app.tavily.com/home) & store under **secrets/tavily_api_key**
+5. Generate [Google Search API Key](https://python.langchain.com/v0.2/docs/integrations/tools/google_search/) (Optional) & store under **secrets/google_cse and secrets/google_api_key**
 
 Once all the steps are done, open the application in a Docker dev-container. The best thing about Docker containers is that it will allow the application to work out of the box, without having to re-install dependencies.
 
