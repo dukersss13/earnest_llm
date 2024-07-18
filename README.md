@@ -10,7 +10,7 @@ These earning reports tend to be extremely lengthy, often containing 100+ pages 
 
 ### Architecture Overview
 Here is a high-level overview of how Earnest works.
-Once the application is started, you will be taken to a window powered by Gradio interface.
+Once the application is started, you will be taken to an interface powered by Gradio.
 
 You can proceed by providing Earnest a URL to the desired earnings report (PDF recommended). Earnest will know to scrape information from this document and store it in its vector database (Chroma).
 Then, we are good to go and proceed with any questions you have. Earnest will have the complete chat history in its memory, so it will know exactly what was discussed.
