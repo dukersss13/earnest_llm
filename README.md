@@ -13,7 +13,7 @@ Here is a high-level overview of how Earnest works.
 Once the application is started, you will be taken to a window powered by Gradio interface.
 
 You can proceed by providing Earnest a URL to the desired earnings report (PDF recommended). Earnest will know to scrape information from this document and store it in its vector database (Chroma).
-Then, we are good to go and proceed with any questions you have!
+Then, we are good to go and proceed with any questions you have. Earnest will have the complete chat history in its memory, so it will know exactly what was discussed.
 
 ![earnest_sketch](https://github.com/user-attachments/assets/f0b2fb79-02d7-43c6-9bda-e87a3df53825)
 
@@ -30,3 +30,8 @@ To get started, you will need to install:
 Once all the steps are done, open the application in a Docker dev-container. The best thing about Docker containers is that it will allow the application to work out of the box, without having to re-install dependencies.
 
 Finally, go ahead and click run on **main.py** or run **python3 main.py** in your terminal and enjoy!
+
+
+### Future Work
+1. Better UI
+2. Enable Web Search
