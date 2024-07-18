@@ -80,6 +80,3 @@ class Earnest:
         msg = self._process_user_input(user_input)
         
         return msg
-    
-    def start(self, message: str):
-        return self.ask(message)
