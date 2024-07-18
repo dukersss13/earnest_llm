@@ -1,7 +1,7 @@
 # Earnest: Stocks Earnings Report AI Assistant
 
 ### Overview
-As an avid investor in the stock market, I prefer to dabble in active investing and select my own stocks. I know... this is not the recommended way as to just dumping your money into the SP500 since it's been proven that the market will always outperform individual investing. With that said, I can't help myself to attempt to select my own companies to invest in and when I do, it's extremely important to keep up with these companies during their earnings seasons.
+As an avid investor in the stock market, I prefer to dabble in active investing and select my own stocks. I know... this is not the recommended way as to just dumping your money into the S&P500 since it's been proven that the market will always outperform individual investing. With that said, I can't help myself to attempt to select my own companies to invest in and when I do, it's extremely important to keep up with these companies during their earnings seasons.
 
 These earning reports tend to be extremely lengthy, often containing 100+ pages and not everything is completely relevant. With that said, Earnest was created as tool to help myself be more efficient when following earnings reports. Earnest is an Q&A AI assistant, powered by Chat-GPT or any other LLM of choice, aimed to **ONLY** help answer questions or provide a summary related to a given earnings document.
 
