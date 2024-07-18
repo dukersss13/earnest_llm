@@ -31,6 +31,9 @@ Once all the steps are done, open the application in a Docker dev-container. The
 
 Finally, go ahead and click run on **main.py** or run **python3 main.py** in your terminal and enjoy!
 
+### Earnest in Action
+![image](https://github.com/user-attachments/assets/c6082b79-9fe3-4700-8e14-5e6c581d7234)
+
 
 ### Future Work
 1. Better UI
