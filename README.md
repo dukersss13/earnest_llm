@@ -38,4 +38,4 @@ Finally, go ahead and click run on **main.py** or run **python3 main.py** in you
 
 ### Future Work
 1. Better UI
-2. Enable Web Search
+2. Optimize RAG Speed
