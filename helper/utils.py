@@ -12,7 +12,7 @@ def load_openai_key() -> str:
     """
     Loads the openai API key
     """
-    return load_secret_file("secrets/api")
+    return load_secret_file("secrets/openai_api_key")
 
 
 def setup_openai():

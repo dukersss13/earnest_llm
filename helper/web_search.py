@@ -1,4 +1,4 @@
-from enum import Enum
+from helper.config import SEARCH_ENGINE, Search
 from helper.utils import setup_google_search, setup_openai, setup_tavily_search
 
 from langchain_community.tools.tavily_search import TavilySearchResults
@@ -10,13 +10,6 @@ from langchain_core.documents import Document
 
 
 setup_openai()
-
-class Search(Enum):
-    GOOGLE = 1
-    TAVILY = 2
-
-
-SEARCH_ENGINE = Search.TAVILY
 
 
 if SEARCH_ENGINE == Search.GOOGLE:
