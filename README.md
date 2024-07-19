@@ -36,7 +36,7 @@ Once all the steps are done, open the application in a Docker dev-container. The
 Finally, go ahead and click run on **main.py** or run **python3 main.py** in your terminal and enjoy!
 
 ### Earnest in Action
-
+Start by providing the link to your desired document and Earnest can start answering or retrieve any key information related to the document immediately. Earnest was also prompted to provide the pages the information is retrieved from so you can double check the information provided. This is served as guardrails against LLM hallucination.
 ![image](https://github.com/user-attachments/assets/c6082b79-9fe3-4700-8e14-5e6c581d7234)
 
 
