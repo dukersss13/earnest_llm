@@ -14,8 +14,10 @@ Once the application is started, you will be taken to an interface powered by Gr
 
 You can proceed by providing Earnest a URL to the desired earnings report (PDF recommended). Earnest will know to scrape information from this document and store it in its vector database (Chroma).
 Then, we are good to go and proceed with any questions you have. Earnest will have the complete chat history in its memory, so it will know exactly what was discussed.
+![Screenshot 2024-07-18 at 6 03 52 PM](https://github.com/user-attachments/assets/85f20900-7131-484a-a6ea-42a797f1b467)
+![Screenshot 2024-07-18 at 6 03 36 PM](https://github.com/user-attachments/assets/a047ff5f-ff4e-42fa-9c19-aeb0cbdd2f21)
 
-![earnest_sketch](https://github.com/user-attachments/assets/f0b2fb79-02d7-43c6-9bda-e87a3df53825)
+
 
 
 ### Setup
