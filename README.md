@@ -41,6 +41,7 @@ Start by providing the link to your desired document and Earnest can start answe
 
 ![image](https://github.com/user-attachments/assets/c6082b79-9fe3-4700-8e14-5e6c581d7234)
 
+![Screenshot 2024-07-19 at 1 39 33 PM](https://github.com/user-attachments/assets/ef9609b7-e202-45d0-bedb-f2a3346e1338)
 
 ### Future Work
 1. Better UI
