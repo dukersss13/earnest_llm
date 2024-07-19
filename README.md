@@ -15,7 +15,12 @@ Once the application is started, you will be taken to an interface powered by Gr
 You can proceed by providing Earnest a URL to the desired earnings report (PDF recommended). Earnest will know to scrape information from this document and store it in its vector database (Chroma).
 Then, we are good to go and proceed with any questions you have. Earnest will have the complete chat history in its memory, so it will know exactly what was discussed.
 
-![earnest_sketch](https://github.com/user-attachments/assets/f0b2fb79-02d7-43c6-9bda-e87a3df53825)
+![Screenshot 2024-07-19 at 10 12 15 AM](https://github.com/user-attachments/assets/32c58246-cb6e-4bc1-9e34-73fbbb6c78f7)
+
+
+![Screenshot 2024-07-18 at 6 03 36 PM](https://github.com/user-attachments/assets/a047ff5f-ff4e-42fa-9c19-aeb0cbdd2f21)
+
+
 
 
 ### Setup
@@ -32,6 +37,7 @@ Once all the steps are done, open the application in a Docker dev-container. The
 Finally, go ahead and click run on **main.py** or run **python3 main.py** in your terminal and enjoy!
 
 ### Earnest in Action
+Start by providing the link to your desired document and Earnest can start answering or retrieve any key information related to the document immediately. Earnest was also prompted to provide the pages the information is retrieved from so you can double check the information provided. This is served as guardrails against LLM hallucination.
 
 ![image](https://github.com/user-attachments/assets/c6082b79-9fe3-4700-8e14-5e6c581d7234)
 
