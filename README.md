@@ -1,4 +1,4 @@
-# Earnest: Stocks Earnings Report AI Assistant
+# Earnest: Stocks Earnings Report Q&A Chatbot
 
 ### Overview
 As an avid investor in the stock market, I prefer to dabble in active investing and select my own stocks. I know... this is not the recommended way as to just dumping your money into the S&P500 since it's been proven that the market will always outperform individual investing. With that said, I can't help myself to attempt to select my own companies to invest in and when I do, it's extremely important to keep up with these companies during their earnings seasons.
@@ -13,7 +13,7 @@ Here is a high-level overview of how Earnest works.
 Once the application is started, you will be taken to an interface powered by Gradio.
 
 You can proceed by providing Earnest a URL to the desired earnings report (PDF recommended). Earnest will know to scrape information from this document and store it in its vector database (Chroma).
-Then, we are good to go and proceed with any questions you have. Earnest will have the complete chat history in its memory, so it will know exactly what was discussed.
+If you don't have an URL at hand, you can also instruct Earnest to do a web search for any earnings reports. Then, we are good to go and proceed with any questions you have. Earnest will have the complete chat history in its memory, so it will know exactly what was discussed.
 
 ![Screenshot 2024-07-19 at 10 12 15 AM](https://github.com/user-attachments/assets/32c58246-cb6e-4bc1-9e34-73fbbb6c78f7)
 
