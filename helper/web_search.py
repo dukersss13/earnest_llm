@@ -11,14 +11,12 @@ from langchain_core.documents import Document
 
 setup_openai()
 
-
 if SEARCH_ENGINE == Search.GOOGLE:
     setup_google_search()
     search = GoogleSearchAPIWrapper()
 elif SEARCH_ENGINE == Search.TAVILY:
     setup_tavily_search()
     search = TavilySearchResults(max_results=4)
-
 
 def conduct_websearch(query: str) -> list[str]:
     """
@@ -33,7 +31,6 @@ def conduct_websearch(query: str) -> list[str]:
 
     return urls
 
-
 def load_and_split_urls(urls: list[str]):
     """
     Load and transform found documents
@@ -43,7 +40,6 @@ def load_and_split_urls(urls: list[str]):
     docs = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200).split_documents(docs)
     
     return docs
-
 
 def fetch_knowledge(query: str) -> list[Document]:
     """

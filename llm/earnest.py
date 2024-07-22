@@ -8,13 +8,13 @@ from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.messages import AIMessage, HumanMessage
 
 from helper.config import MODEL
-from helper.tools import find_urls, scrape_info, web_search
+from helper.tools import find_urls, scrape_info
+from helper.web_search import fetch_knowledge
 from llm.prompts import contextualize_q_prompt, qa_prompt
 from helper.utils import setup_openai
 
 
 setup_openai()
-
 
 llm = ChatOpenAI(model_name=MODEL, temperature=0.2)
 
@@ -38,10 +38,10 @@ class Earnest:
         urls = find_urls(query)
         if len(urls):
             docs = scrape_info(urls)
-            self._enrich_knowledge_base(docs)
         elif "look up" in query.lower() or "search" in query.lower() or self._check_knowledge_base(query):
-            docs = web_search(query)
-            self._enrich_knowledge_base(docs)
+            docs = fetch_knowledge(query)
+        
+        self._enrich_knowledge_base(docs)
     
     def _process_user_input(self, human_message: str) -> str:
         """

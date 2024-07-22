@@ -20,25 +20,12 @@ def scrape_info(urls: list[str]) -> list[Document]:
 
     return documents
 
-def web_search(query: str):
-    """
-    Used if the user requests a "search"
-    or "look up".
-
-    :param query: query from user
-    """
-    documents = fetch_knowledge(query)
-    
-    return documents
-
-
 def load_and_transform_pdf(urls: list[str]) -> list[Document]:
     # Load & transform PDF
     loader = PyPDFLoader(urls)
     documents = loader.load_and_split()
 
     return documents
-
 
 def identify_file_extension(url: str):
     # Regex pattern to match common document file extensions
@@ -53,7 +40,6 @@ def identify_file_extension(url: str):
     else:
         # Return None if no valid extension is found
         return None
-
 
 def find_urls(text) -> list[str]:
     # Define the URL regex pattern
