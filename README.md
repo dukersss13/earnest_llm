@@ -33,7 +33,7 @@ To get started, you will need to install:
 
 Once all the steps are done, open the application in a Docker dev-container. The best thing about Docker containers is that it will allow the application to work out of the box, without having to re-install dependencies.
 
-Finally, go ahead and click run on **main.py** or run **python3 main.py** in your terminal and enjoy!
+Finally, go ahead and click run on `main.py` or run `python3 main.py` in your terminal and enjoy!
 
 ### Earnest in Action
 Start by providing the link to your desired document and Earnest can start answering or retrieve any key information related to the document immediately. Earnest was also prompted to provide the pages the information is retrieved from so you can double check the information provided. This is served as guardrails against LLM hallucination.
