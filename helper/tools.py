@@ -1,7 +1,7 @@
 import re
 from langchain_core.documents import Document
 from langchain_community.document_loaders.pdf import PyPDFLoader
-from helper.web_search import fetch_knowledge, load_and_split_urls
+from helper.web_search import load_and_split_urls
 
 
 def scrape_info(urls: list[str]) -> list[Document]:
