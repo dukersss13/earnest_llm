@@ -35,13 +35,15 @@ class Earnest:
 
     def _assess_query(self, query: str):
         # Assess query
+        docs = []
         urls = find_urls(query)
         if len(urls):
             docs = scrape_info(urls)
         elif "look up" in query.lower() or "search" in query.lower() or self._check_knowledge_base(query):
             docs = fetch_knowledge(query)
         
-        self._enrich_knowledge_base(docs)
+        if len(docs):
+            self._enrich_knowledge_base(docs)
     
     def _process_user_input(self, human_message: str) -> str:
         """
