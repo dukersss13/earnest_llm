@@ -19,7 +19,8 @@ If you don't have an URL at hand, you can also instruct Earnest to do a web sear
 ![Screenshot 2024-11-08 at 2 34 27 PM](https://github.com/user-attachments/assets/e2c912e4-159a-4534-9d83-ad4d45090bae)
 
 
-![Screenshot 2024-07-18 at 6 03 36 PM](https://github.com/user-attachments/assets/a047ff5f-ff4e-42fa-9c19-aeb0cbdd2f21)
+![image](https://github.com/user-attachments/assets/54691842-9da0-4ae5-82c3-350f8253da72)
+
 
 
 
