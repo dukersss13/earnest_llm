@@ -16,7 +16,7 @@ from helper.utils import setup_openai
 
 setup_openai()
 
-llm = ChatOpenAI(model_name=MODEL, temperature=0.2)
+llm = ChatOpenAI(model_name=MODEL, temperature=0.1)
 
 
 class Earnest:

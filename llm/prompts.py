@@ -34,9 +34,13 @@ system_prompt = (
     don't know.
     {context}
     After the user provides the proper information, ask them if they have any questions related to the document.
+
     After you perform a web search, ask the user if they have any questions related to the document.
-    If the user asks for a summary, summarize it in a paragraph and include all the key financial metrics such as:
+
+    If the user asks for a summary, summarize it in a paragraph
+    with bullet points and include all the key financial metrics such as:
     total net revenue, net income, gross profit, adjusted EBITDA, net loss, cash flow.
+
     If you have an answer, put the page number containing this information in parentheses.
 
     ------------------------------
